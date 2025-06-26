@@ -1,0 +1,296 @@
+        1 Архитип
+        2 Имя
+        3 Вид (кролик, лиса, мышь, птица, сова,  другой)
+        4 Отличия (мужской, женский, меняющийся, мультикультурный, простой, строгий, яркий)
+        5 Поведение(дипломатичное, непреклонное, обая
+        тельное, угодливое )
+        6 Где ваш дом? ( 
+        Лес
+        далёкие земли
+        поляна _________
+        )
+        7 Почему вы стали бродягой?
+        8 Кого вы оставили? (лучшего союзника
+        любовь
+        наставника
+        семью
+        ученика)
+        9 Связи (Напиши имя человека с кем связан, и имя партнера) ******
+        10 Мотивы Выберите два из списка +
+        11 Выберите один характер из списка +
+        12 Какой фракции помогли?    СОЗДАТЬ ТАБЛИЦУ РЕПУТАЦИИ ФРАКЦИЙ +5 = +1о | -3 = -1о
+        13  Какой фракции навредили? 
+        14 НАЧИНАЕМ РАСКИДЫВАТЬ ХАРАКТЕРИСТИКИ +
+        Напомню что на начальном этапе сумма характеристик не должна быть больше 3, вы можете отметить одну характеристику в -1 или -2 чтобы увеличить общий +, Пример как сожно раскидать
+        Мощь [-1]
+        Сноровка [+1]
+        Удача [0]
+        Хитрость [+1]
+        Шарм [+2]
+        Введите МОЩЬ числом от -2 до 2
+        15 Введите Сноровку числом от -2 до 2
+        16 Введите Удачу числом от -2 до 2
+        17 Введите Хитрость числом от -2 до 2
+        18 Введите Шарм числом от -2 до 2
+        19 сам заполню травмы истощение и затраты
+        20 Выбери из спика 2 плутовских приемы
+        21 Выбери из списка 1 оружейный навык
+                22 Выбери из списка 3 хода??????????????????????????????????????????????????????????
+        23 Ценность на старте сам заполни
+24 Отправь фото своего персонажа
+
+
+РЕПУТАЦИЯ
+1. Маркисат
+2. Крылатые династии
+3. Лесной союз (упоминается, но без механик в быстром старте)
+4. Обитатели Леса (мирные жители, как отдельная фракция)
+
+если 5оч пристижа_положительный и > то репутация + 1
+если 15оч пристижа_положительный и > то репутация + 1
+если 30оч пристижа_положительный и > то репутация + 1
+
+если -3оч пристижа_отрицательный и < то репутация - 1
+если -9оч пристижа_отрицательный и < то репутация - 1
+если -18оч пристижа_отрицательный и < то репутация - 1
+
+
+ИНФА О ПЕРСОНАЖЕ
+0 chat_id не пармари кей а просто нумерик или бигинт
+1 'archetype' 
+2 'name'
+3 'species'
+4 'features'
+5 'behavior'
+6 'home'
+7 'reason'
+8 'left_behind'
+9 'communications'
+10 'character_photo'
+11 injury травмы  тут дефолт = 0
+12 depletion истощения тут дефолт = 0
+13 costs затраты тут дефолт = 0
+14 'motives'
+15 'активен ли перс или нет False True'
+
+
+Что с собой
+0 chat_id не пармари кей а просто нумерик или бигинт
+1 'money'
+2 'инвентарь'
+
+Фракции
+0 chat_id не пармари кей а просто нумерик или бигинт
+1 'marquisate_frac'
+2 'winged_dynasties_frac'
+3 'forest_alliance_frac'
+4 'woodland_folk_frac'
+
+Навыки 
+0 chat_id не пармари кей а просто нумерик или бигинт
+1 'power'
+2 'agility'
+3 'luck'
+4 'cunning'
+5 'charm'
+
+Тут таблица скиллов ходов и тд
+0 chat_id не пармари кей а просто нумерик или бигинт
+1 'rogue_skills'
+2 'weapon_skill'
+3 'moves'
+
+
+CREATE TABLE heroes (
+    chat_id BIGINT PRIMARY KEY,  -- ID пользователя в Telegram
+    archetype TEXT,  -- Архетип (вор, маг и т.д.)
+    name TEXT,  -- Имя персонажа
+    species TEXT,  -- Вид (раса)
+    features TEXT,  -- Особенности внешности
+    behavior TEXT,  -- Манеры поведения
+    home TEXT,  -- Родной край
+    reason TEXT,  -- Причина странствий
+    left_behind TEXT,  -- Что оставил позади
+    communications TEXT,  -- Связи с другими персонажами
+    character_photo TEXT,  -- file_id фото из Telegram
+    motives TEXT,  -- Мотивация
+    is_active BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE character_status (
+    chat_id BIGINT PRIMARY KEY,
+    injury INTEGER DEFAULT 0,  -- Травмы (0 по умолчанию)
+    depletion INTEGER DEFAULT 0,  -- Истощения (0 по умолчанию)
+    costs INTEGER DEFAULT 0,  -- Затраты (0 по умолчанию)
+
+    max_injury INTEGER DEFAULT 4,  -- Травмы (4 по умолчанию)
+    max_depletion INTEGER DEFAULT 4,  -- Истощения (4 по умолчанию)
+    max_costs INTEGER DEFAULT 4,  -- Затраты (4 по умолчанию)
+);
+
+CREATE TABLE inventory (
+    chat_id BIGINT PRIMARY KEY,
+    money INTEGER DEFAULT 0,  -- Деньги (серебро)
+    items TEXT  -- Инвентарь (можно хранить JSON или просто текст)
+);
+
+
+CREATE TABLE fractions (
+    chat_id BIGINT PRIMARY KEY,
+    -- Репутация фракций
+    marquisate_rep INTEGER DEFAULT 0,  -- Маркизат
+    winged_dynasties_rep INTEGER DEFAULT 0,  -- Крылатые Династии
+    forest_alliance_rep INTEGER DEFAULT 0,  -- Лесной Альянс
+    woodland_folk_rep INTEGER DEFAULT 0,  -- Лесной Народ
+    
+    -- Престиж у фракций
+    marquisate_prestige_p INTEGER DEFAULT 0,
+    winged_dynasties_prestige_p INTEGER DEFAULT 0,
+    forest_alliance_prestige_p INTEGER DEFAULT 0,
+    woodland_folk_prestige_p INTEGER DEFAULT 0
+
+    -- Престиж у фракций
+    marquisate_prestige_m INTEGER DEFAULT 0,
+    winged_dynasties_prestige_m INTEGER DEFAULT 0,
+    forest_alliance_prestige_m INTEGER DEFAULT 0,
+    woodland_folk_prestige_m INTEGER DEFAULT 0
+);
+
+
+-- Триггер для INSERT
+CREATE TRIGGER IF NOT EXISTS update_rep_on_insert
+AFTER INSERT ON fractions
+BEGIN
+    UPDATE fractions 
+    SET 
+        marquisate_rep = CASE 
+            WHEN NEW.marquisate_prestige >= 30 THEN 3
+            WHEN NEW.marquisate_prestige >= 15 THEN 2
+            WHEN NEW.marquisate_prestige >= 5 THEN 1
+            WHEN NEW.marquisate_prestige <= -18 THEN -3
+            WHEN NEW.marquisate_prestige <= -9 THEN -2
+            WHEN NEW.marquisate_prestige <= -3 THEN -1
+            ELSE 0
+        END,
+        winged_dynasties_rep = CASE 
+            WHEN NEW.winged_dynasties_prestige >= 30 THEN 3
+            WHEN NEW.winged_dynasties_prestige >= 15 THEN 2
+            WHEN NEW.winged_dynasties_prestige >= 5 THEN 1
+            WHEN NEW.winged_dynasties_prestige <= -18 THEN -3
+            WHEN NEW.winged_dynasties_prestige <= -9 THEN -2
+            WHEN NEW.winged_dynasties_prestige <= -3 THEN -1
+            ELSE 0
+        END,
+        forest_alliance_rep = CASE 
+            WHEN NEW.forest_alliance_prestige >= 30 THEN 3
+            WHEN NEW.forest_alliance_prestige >= 15 THEN 2
+            WHEN NEW.forest_alliance_prestige >= 5 THEN 1
+            WHEN NEW.forest_alliance_prestige <= -18 THEN -3
+            WHEN NEW.forest_alliance_prestige <= -9 THEN -2
+            WHEN NEW.forest_alliance_prestige <= -3 THEN -1
+            ELSE 0
+        END,
+        woodland_folk_rep = CASE 
+            WHEN NEW.woodland_folk_prestige >= 30 THEN 3
+            WHEN NEW.woodland_folk_prestige >= 15 THEN 2
+            WHEN NEW.woodland_folk_prestige >= 5 THEN 1
+            WHEN NEW.woodland_folk_prestige <= -18 THEN -3
+            WHEN NEW.woodland_folk_prestige <= -9 THEN -2
+            WHEN NEW.woodland_folk_prestige <= -3 THEN -1
+            ELSE 0
+        END
+    WHERE rowid = NEW.rowid;
+END;
+
+-- Триггер для UPDATE
+CREATE TRIGGER IF NOT EXISTS update_rep_on_update
+AFTER UPDATE OF 
+    marquisate_prestige,
+    winged_dynasties_prestige,
+    forest_alliance_prestige,
+    woodland_folk_prestige
+ON fractions
+BEGIN
+    UPDATE fractions
+    SET 
+        marquisate_rep = CASE 
+            WHEN NEW.marquisate_prestige >= 30 THEN 3
+            WHEN NEW.marquisate_prestige >= 15 THEN 2
+            WHEN NEW.marquisate_prestige >= 5 THEN 1
+            WHEN NEW.marquisate_prestige <= -18 THEN -3
+            WHEN NEW.marquisate_prestige <= -9 THEN -2
+            WHEN NEW.marquisate_prestige <= -3 THEN -1
+            ELSE 0
+        END,
+        winged_dynasties_rep = CASE 
+            WHEN NEW.winged_dynasties_prestige >= 30 THEN 3
+            WHEN NEW.winged_dynasties_prestige >= 15 THEN 2
+            WHEN NEW.winged_dynasties_prestige >= 5 THEN 1
+            WHEN NEW.winged_dynasties_prestige <= -18 THEN -3
+            WHEN NEW.winged_dynasties_prestige <= -9 THEN -2
+            WHEN NEW.winged_dynasties_prestige <= -3 THEN -1
+            ELSE 0
+        END,
+        forest_alliance_rep = CASE 
+            WHEN NEW.forest_alliance_prestige >= 30 THEN 3
+            WHEN NEW.forest_alliance_prestige >= 15 THEN 2
+            WHEN NEW.forest_alliance_prestige >= 5 THEN 1
+            WHEN NEW.forest_alliance_prestige <= -18 THEN -3
+            WHEN NEW.forest_alliance_prestige <= -9 THEN -2
+            WHEN NEW.forest_alliance_prestige <= -3 THEN -1
+            ELSE 0
+        END,
+        woodland_folk_rep = CASE 
+            WHEN NEW.woodland_folk_prestige >= 30 THEN 3
+            WHEN NEW.woodland_folk_prestige >= 15 THEN 2
+            WHEN NEW.woodland_folk_prestige >= 5 THEN 1
+            WHEN NEW.woodland_folk_prestige <= -18 THEN -3
+            WHEN NEW.woodland_folk_prestige <= -9 THEN -2
+            WHEN NEW.woodland_folk_prestige <= -3 THEN -1
+            ELSE 0
+        END
+    WHERE rowid = NEW.rowid;
+END;
+
+
+
+
+CREATE TABLE stats (
+    chat_id BIGINT PRIMARY KEY,
+    power INTEGER,  -- Мощь
+    agility INTEGER,  -- Ловкость
+    luck INTEGER,  -- Удача
+    cunning INTEGER,  -- Хитрость
+    charm INTEGER,  -- Харизма
+
+    max_power INTEGER DEFAULT 2,  -- Мощь
+    max_agility INTEGER DEFAULT 2,  -- Ловкость
+    max_luck INTEGER DEFAULT 2,  -- Удача
+    max_cunning INTEGER DEFAULT 2,  -- Хитрость
+    max_charm INTEGER DEFAULT 2  -- Харизма
+);
+
+
+CREATE TABLE skills (
+    chat_id BIGINT PRIMARY KEY,
+    rogue_skills TEXT,  -- Воровские навыки
+    weapon_skill TEXT,  -- Боевое мастерство
+    moves TEXT  -- Ходы персонажа
+);
+
+
+
+Если развивается
+✦ добавить +1 к характеристике (макс. +2);
+✦ добавить новый ход с бланка самого персонажа (макс. 5);
+✦ добавить новый ход с бланка другого персонажа (макс. 2);
+✦ добавить 2 новых оружейных навыка (макс. 7);
+✦ добавить 2 новых плутовских приёма (макс. 6);
+✦ добавить одну ячейку на любую шкалу вреда (макс. 6 на каждой шкале);
+✦ добавить 2 новые связи (макс. 6).
+
+ДОРАБОТАТЬ СВЯЗИ
+КРАСИВО ВЫВОДИТЬ ИНФОРМАЦИЮ О ИЗМЕНЕНИЯХ
+РЕДАКТИРОВАНИЕ НАВЫКОВ
+СДЕЛАТЬ КНОПКУ НАЗАД
+В КУБИКАХ ВЫВОЖИТЬ НАВЫКИ ПЕРСОНАЖА

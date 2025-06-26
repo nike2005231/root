@@ -1,0 +1,59 @@
+-- Таблица пользователей
+CREATE TABLE users (
+    id TEXT PRIMARY KEY,               -- ID чата/пользователя из Telegram
+    name_user text
+);
+
+-- Таблица героев
+CREATE TABLE heroes (
+    id TEXT PRIMARY KEY,            
+    archetype TEXT,         -- Архетип (вор, поджигатель и т.д.)
+    name TEXT,              -- Имя персонажа
+    species TEXT,           -- Вид животного
+    
+    -- Внешние черты
+    appearance_details TEXT,         -- Внешние отличия
+    notable_item TEXT,              -- Заметный предмет
+    behavior_pattern TEXT,           -- Модель поведения
+    
+    -- Биография
+    bio_home TEXT,                  -- Где ваш дом?
+    bio_why_vagabond TEXT,          -- Почему стали бродягой?
+    bio_who_left_behind TEXT,       -- Кого оставили?
+    
+    -- Репутация у фракций
+    faction_helped TEXT,            -- Фракция, которой помог
+    faction_harmed TEXT,            -- Фракция, которой навредил
+    
+    -- Характеристики
+    power INTEGER,                  -- Мощь
+    dexterity INTEGER,              -- Сноровка
+    luck INTEGER,                   -- Удача
+    cunning INTEGER,                -- Хитрость
+    charm INTEGER,                  -- Шарм
+    
+    -- Мотивы и характер
+    motivation_1 TEXT,              -- Первый мотив
+    motivation_2 TEXT,              -- Второй мотив
+    nature TEXT,                    -- Характер
+    
+    -- Навыки
+    moves TEXT,                     -- JSON или текстовый список выбранных ходов
+    weapon_skills TEXT,             -- Оружейные навыки
+    rogue_skills TEXT,              -- Плутовские приемы (если есть)
+    
+    -- Снаряжение
+    equipment_value INTEGER,        -- Стартовая ценность
+    equipment TEXT,                 -- JSON или текстовый список снаряжения
+    
+    -- Связи
+    connection_1_type TEXT,         -- Тип первой связи
+    connection_1_partner TEXT,      -- Имя персонажа для первой связи
+    connection_2_type TEXT,         -- Тип второй связи
+    connection_2_partner TEXT,      -- Имя персонажа для второй связи
+    
+    -- Метаданные
+    is_active INTEGER DEFAULT 1    -- Активен ли персонаж (0/1)
+);
+
+select users.id from users where 633986877 is heroes;
