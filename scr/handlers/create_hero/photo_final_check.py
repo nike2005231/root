@@ -13,7 +13,8 @@ async def final_build(router, F, db):
             await state.update_data({'character_photo': photo_id})
 
             data = await state.get_data()
-
+            cm1_k, cm1_v = next(iter(data['communications_1'].items())) #Вроде и без генератора норм будет
+            cm2_k, cm2_v = next(iter(data['communications_2'].items()))
             await message.answer_photo(
                 photo=photo_id,
                 caption="📸 *Портрет вашего персонажа*",
@@ -60,10 +61,11 @@ async def final_build(router, F, db):
                 f"{data['personality']}\n\n"
                 
                 f"🎥 *ХОДЫ*\n"
-                f"{data['moves']}\n\n"
+                f"{data['moves']}"
                 
                 f"🤝 *СВЯЗИ С ПЕРСОНАЖАМИ*\n"
-                f"{data['communications']}"
+                f"*{cm1_k}*{cm1_v}\n"
+                f"*{cm2_k}*{cm2_v}"
             )
             await message.answer(character_info, parse_mode="Markdown", reply_markup=check_hero())
             # await state.set_state(CreateHero.finall_check)
@@ -78,6 +80,15 @@ async def final_build(router, F, db):
             chat_id = message.chat.id
             
             # Сохраняем основную информацию в таблицу info
+            cm1_k, cm1_v = next(iter(data['communications_1'].items())) #Вроде и без генератора норм будет
+            cm2_k, cm2_v = next(iter(data['communications_2'].items()))
+
+
+            import json
+            communications = [cm1_k, cm1_v, '\n', cm2_k, cm2_v]
+
+            serialized = json.dumps(communications) #lite не воспринимает листы переводим лист тип в строку json и потом как будем получать читаем его loads выглядит так '[cm1_k, cm1_v, cm2_k, cm2_v]'
+
             db.insert_data(
                 chat_id,
                 data.get('archetype'),
@@ -88,7 +99,7 @@ async def final_build(router, F, db):
                 data.get('home'),
                 data.get('reason'),
                 data.get('left_behind'),
-                data.get('communications'),
+                serialized,
                 data.get('character_photo'),
                 data.get('motives'),
                 False,  # is_active

@@ -62,19 +62,24 @@ async def init_hero_changes_stats(router, F, db, message):
     async def show_history(message: Message):
         data = db.get_data(message.chat.id, request='SELECT name, species, features, behavior, home, reason, left_behind, communications, motives FROM info WHERE chat_id = ?')
         if data:
-            (name, species, features, behavior, home, reason, left, comm, motives) = data[0]
+            name, species, features, behavior, home, reason, left, communications, motives = data[0]
+            import json 
+            communications = json.loads(communications)
+            show_communications = ''
+            for x in communications:
+                show_communications += x
 
             response = (
                 "📖 *История персонажа:*\n\n"
-                f"📛 *Имя:* {name or 'Не указано'}\n"
-                f"🧬 *Вид:* {species or 'Не указано'}\n"
-                f"🎭 *Особенности:* {features or 'Не указано'}\n"
-                f"💃 *Манеры:* {behavior or 'Не указано'}\n\n"
-                f"🏠 *Родной край:*\n{home or 'Не указано'}\n\n"
-                f"❓ *Причина странствий:*\n{reason or 'Не указано'}\n\n"
-                f"👣 *Оставленное позади:*\n{left or 'Не указано'}\n\n"
-                f"📞 *Связи:*\n{comm or 'Не указано'}\n\n"
-                f"💫 *Мотивация:*\n*Развитие происходит*\n{motives or 'Не указано'}"
+                f"📛 *Имя:* {name}\n"
+                f"🧬 *Вид:* {species}\n"
+                f"🎭 *Особенности:* {features}\n"
+                f"💃 *Манеры:* {behavior}\n\n"
+                f"🏠 *Родной край:*\n{home}\n\n"
+                f"❓ *Причина странствий:*\n{reason}\n\n"
+                f"👣 *Оставленное позади:*\n{left}\n\n"
+                f"📞 *Связи:*\n{show_communications}\n\n"
+                f"💫 *Мотивация:*\n*Развитие происходит*\n{motives}"
             )
             await message.answer(response, parse_mode="Markdown")
 

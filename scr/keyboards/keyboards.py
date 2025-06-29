@@ -20,12 +20,10 @@ def check_keyboard():
 def profile_keyboard():
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text='💉 Ячейки ТИЗ')],
-            [KeyboardButton(text='📚 Навыки')],
-            [KeyboardButton(text='📜 История')],
-            [KeyboardButton(text='✨ Скиллы')],
-            [KeyboardButton(text='🏛 Отношения фракций')],
             [KeyboardButton(text='🎒 Инвентарь')],
+            [KeyboardButton(text='💉 Ячейки ТИЗ'), KeyboardButton(text='✨ Скиллы')],
+            [KeyboardButton(text='📚 Навыки'), KeyboardButton(text='📜 История')],
+            [KeyboardButton(text='🏛 Отношения фракций')],
             [KeyboardButton(text='💔 Удалить персонажа')],
             [KeyboardButton(text='🏠 Меню')]
         ],
@@ -79,8 +77,6 @@ def fractions_keyboard_choice():
         resize_keyboard=True
     )
 
-
-
 def inventory_keyboard():
     return ReplyKeyboardMarkup(
         keyboard=[
@@ -128,3 +124,14 @@ def check_hero():
         ],
         resize_keyboard=True
     )
+
+def communications_keyboard():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text='👥 Друг'), KeyboardButton(text='💼 Профессионал')],
+            [KeyboardButton(text='🏠 Семья'), KeyboardButton(text='❤️ Партнёр')],
+            [KeyboardButton(text='👀 Наблюдатель'), KeyboardButton(text='🛡️ Защитник')]
+        ],
+        resize_keyboard=True
+    )
+

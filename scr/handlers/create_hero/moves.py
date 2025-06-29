@@ -3,10 +3,11 @@ from aiogram.fsm.context import FSMContext
 from states.states_create_hero import CreateHero
 from archetype.moves import moves_choice
 from archetype.communications import communications_choice
+from keyboards.keyboards import communications_keyboard
 import textwrap
 
 async def changing_data(state, message):
-    
+
     data = await state.get_data()
 
     if 'Начитанный' in data['moves']:
@@ -68,7 +69,6 @@ async def moves_hero(router):
         try:
             data = await state.get_data()
             data_moves = moves_choice(data['archetype'].lower())
-            data_communications = communications_choice(data['archetype'].lower())
             if data['archetype'].lower() == 'ремесленник':
                 try:
                     choice = int(message.text)
@@ -113,17 +113,28 @@ async def moves_hero(router):
             await changing_data(state=state, message=message)
             await message.answer(
                 textwrap.dedent(f"""
-                🧩 *Ввод имён персонажей для связи*
-                
-                Пожалуйста, введите *имена* двух персонажей, через пробел:
-                
-                🔹 {data_communications[0][0]}
-                🔹 {data_communications[0][1]}
-                
-                📝 Пример: `Саша Влад`
-                🚨 Убедитесь в правильности написания имён
-                """),
-                parse_mode="Markdown"
+                🧩 *Выберите первый тип связи персонажа:*
+
+                *👥 Друг:*  
+                {communications_choice('друг')}
+
+                *💼 Профессионал:*  
+                {communications_choice('профессионал')}
+
+                *🏠 Семья:*  
+                {communications_choice('семья')}
+
+                *❤️ Партнёр:*  
+                {communications_choice('партнер')}
+
+                *👀 Наблюдатель:*  
+                {communications_choice('наблюдатель')}
+
+                *🛡️ Защитник:*  
+                {communications_choice('защитник')}
+                """), 
+                reply_markup=communications_keyboard(),
+                parse_mode="Markdown", 
             )
             
         except Exception as e:

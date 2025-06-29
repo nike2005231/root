@@ -124,7 +124,7 @@ async def init_tiz(router, F, db, message):
 
         current_value, max_value = db.get_data(message.chat.id, request='select depletion, max_depletion from character_status where chat_id == ?')[0]
         
-        if new_injuries_value > max_value + 1:
+        if new_depletion_value > max_value + 1:
             await message.answer(f"❗️ Ячейка травмы не может быть больше *{max_value + 1}*", parse_mode="Markdown")
             return
 
@@ -166,7 +166,7 @@ async def init_tiz(router, F, db, message):
 
         current_value, max_value = db.get_data(message.chat.id, request='select costs, max_costs from character_status where chat_id == ?')[0]
 
-        if new_injuries_value > max_value + 1:
+        if new_costs_value > max_value + 1:
             await message.answer(f"❗️ Ячейка травмы не может быть больше *{max_value + 1}*", parse_mode="Markdown")
             return
 
