@@ -1,10 +1,11 @@
 from aiogram.types import Message
 import random
-from keyboards.keyboards import tiz_keyboard, check_keyboard, menu_keyboard, inventory_keyboard, fractions_keyboard, skills_keyboard
+from keyboards.keyboards import tiz_keyboard, check_keyboard, menu_keyboard, inventory_keyboard, fractions_keyboard, skills_keyboard, history_keyboard
 from handlers.handlers_changes_stats.tiz_handlers import init_tiz
 from handlers.handlers_changes_stats.fractions_handlers import init_fractions
 from handlers.handlers_changes_stats.inventory import init_inventory
 from handlers.handlers_changes_stats.skills import init_skills
+from handlers.handlers_changes_stats.history import init_history
 
 async def init_hero_changes_stats(router, F, db, message):
     @router.message(F.text == "💉 Ячейки ТИЗ")
@@ -60,28 +61,27 @@ async def init_hero_changes_stats(router, F, db, message):
 
     @router.message(F.text == "📜 История")
     async def show_history(message: Message):
-        data = db.get_data(message.chat.id, request='SELECT name, species, features, behavior, home, reason, left_behind, communications, motives FROM info WHERE chat_id = ?')
-        if data:
-            name, species, features, behavior, home, reason, left, communications, motives = data[0]
-            import json 
-            communications = json.loads(communications)
-            show_communications = ''
-            for x in communications:
-                show_communications += x
+        data = db.get_data(message.chat.id, request='SELECT name, species, features, behavior, home, reason, left_behind, motives FROM info WHERE chat_id = ?')
+        communications = db.get_data(message.chat.id, request='SELECT role, name FROM communications WHERE chat_id = ?')
 
-            response = (
-                "📖 *История персонажа:*\n\n"
-                f"📛 *Имя:* {name}\n"
-                f"🧬 *Вид:* {species}\n"
-                f"🎭 *Особенности:* {features}\n"
-                f"💃 *Манеры:* {behavior}\n\n"
-                f"🏠 *Родной край:*\n{home}\n\n"
-                f"❓ *Причина странствий:*\n{reason}\n\n"
-                f"👣 *Оставленное позади:*\n{left}\n\n"
-                f"📞 *Связи:*\n{show_communications}\n\n"
-                f"💫 *Мотивация:*\n*Развитие происходит*\n{motives}"
-            )
-            await message.answer(response, parse_mode="Markdown")
+        name, species, features, behavior, home, reason, left, motives = data[0]
+        def transform_communications(data: list[tuple[str, str]]) -> str:
+            return '\n'.join(f"{x} - *{y}*" for x, y in data)
+
+        response = (
+            "📖 *История персонажа:*\n\n"
+            f"📛 *Имя:* {name}\n"
+            f"🧬 *Вид:* {species}\n"
+            f"🎭 *Особенности:* {features}\n"
+            f"💃 *Манеры:* {behavior}\n\n"
+            f"🏠 *Родной край:*\n{home}\n\n"
+            f"❓ *Причина странствий:*\n{reason}\n\n"
+            f"👣 *Оставленное позади:*\n{left}\n\n"
+            f"📞 *Связи:*\n{transform_communications(communications)}\n\n"
+            f"💫 *Мотивация:*\n*Развитие происходит*\n{motives}"
+        )
+        await init_history(router=router, F=F, db=db, message=message)
+        await message.answer(response, parse_mode="Markdown", reply_markup=history_keyboard())
 
     @router.message(F.text == "✨ Скиллы")
     async def show_stats(message: Message):
@@ -182,7 +182,8 @@ async def init_hero_changes_stats(router, F, db, message):
                     'inventory',
                     'fractions',
                     'stats',
-                    'skills'
+                    'skills',
+                    'communications'
                 ]
                 
                 for table in tables:

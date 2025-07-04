@@ -36,3 +36,18 @@ class SkillsState(StatesGroup):
     cunning = State() 
     charisma = State() 
 
+
+class CommunicateState(StatesGroup):
+    add_friend = State()
+    add_professional = State()
+    add_family = State()
+    add_partner = State()
+    add_observer = State()
+    add_protector = State()
+
+class DeleteCommunicate(StatesGroup):
+    delete = State()
+
+
+
+

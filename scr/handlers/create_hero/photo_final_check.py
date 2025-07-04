@@ -64,8 +64,8 @@ async def final_build(router, F, db):
                 f"{data['moves']}"
                 
                 f"🤝 *СВЯЗИ С ПЕРСОНАЖАМИ*\n"
-                f"*{cm1_k}*{cm1_v}\n"
-                f"*{cm2_k}*{cm2_v}"
+                f"*{cm1_k} *{cm1_v}\n"
+                f"*{cm2_k} *{cm2_v}"
             )
             await message.answer(character_info, parse_mode="Markdown", reply_markup=check_hero())
             # await state.set_state(CreateHero.finall_check)
@@ -79,15 +79,12 @@ async def final_build(router, F, db):
             data = await state.get_data()
             chat_id = message.chat.id
             
-            # Сохраняем основную информацию в таблицу info
+            # Сохраняем основную информацию в таблицу info да ебанный DRY мы не соблюдаем но если его тут соблюдать то логику в записи придется переписывать а там он тоже не соблюден
             cm1_k, cm1_v = next(iter(data['communications_1'].items())) #Вроде и без генератора норм будет
             cm2_k, cm2_v = next(iter(data['communications_2'].items()))
 
-
-            import json
-            communications = [cm1_k, cm1_v, '\n', cm2_k, cm2_v]
-
-            serialized = json.dumps(communications) #lite не воспринимает листы переводим лист тип в строку json и потом как будем получать читаем его loads выглядит так '[cm1_k, cm1_v, cm2_k, cm2_v]'
+            db.insert_data(chat_id, cm1_k, cm1_v, request='insert into communications (chat_id, role, name) values (?, ?, ?)')
+            db.insert_data(chat_id, cm2_k, cm2_v, request='insert into communications (chat_id, role, name) values (?, ?, ?)')
 
             db.insert_data(
                 chat_id,
@@ -99,16 +96,15 @@ async def final_build(router, F, db):
                 data.get('home'),
                 data.get('reason'),
                 data.get('left_behind'),
-                serialized,
                 data.get('character_photo'),
                 data.get('motives'),
                 False,  # is_active
                 request='''
                 INSERT INTO info (
                     chat_id, archetype, name, species, features, behavior,
-                    home, reason, left_behind, communications, character_photo,
+                    home, reason, left_behind, character_photo,
                     motives, is_active
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 '''
             )
 

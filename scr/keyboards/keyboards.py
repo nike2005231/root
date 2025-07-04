@@ -135,3 +135,31 @@ def communications_keyboard():
         resize_keyboard=True
     )
 
+def history_keyboard():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text='🌐 Связи')],
+            [KeyboardButton(text='🏠 Меню')]  
+        ],
+        resize_keyboard=True
+    )
+
+def change_communications_keyboard():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text='➕ Добавить связь')],
+            [KeyboardButton(text='➖ Убрать связь')],
+            [KeyboardButton(text='🧾 Справка'), KeyboardButton(text='🏠 Меню')]
+        ],
+        resize_keyboard=True
+    )
+
+def choice_communications_keyboard():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text='👥 Друга'), KeyboardButton(text='💼 Профессионала')],
+            [KeyboardButton(text='🏠 Семью'), KeyboardButton(text='❤️ Партнёра')],
+            [KeyboardButton(text='👀 Наблюдателя'), KeyboardButton(text='🛡️ Защитника')]
+        ],
+        resize_keyboard=True
+    )
